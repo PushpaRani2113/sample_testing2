@@ -33,3 +33,11 @@ steps:
     testRunTitle: 'Java 25 Automation Test Results'
     failTaskOnFailedTests: true
 
+- task: PublishPipelineArtifact@1
+  displayName: 'Upload Allure Results'
+  condition: succeededOrFailed()
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/build/allure-results' # Adjust path if needed
+    artifact: 'AllureResults'
+    publishLocation: 'pipeline'
+
