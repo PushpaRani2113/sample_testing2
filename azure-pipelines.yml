@@ -1,0 +1,35 @@
+# Replace 'your-specific-branch' with the actual name of your branch
+trigger:
+  - new
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Step 1: Set up Java 25
+- task: JavaToolInstaller@0
+  displayName: 'Install Java 25'
+  inputs:
+    versionSpec: '25'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
+# Step 2: Grant executable permissions to the Gradle Wrapper
+- script: chmod +x gradlew
+  displayName: 'Make gradlew executable'
+
+# Step 3: Run the headless automation tests
+- script: ./gradlew cleanTest test --tests "Test" -Dheadless=true --info
+  displayName: 'Run Headless Automation Tests'
+
+# Step 4: Publish Test Results to Azure DevOps UI
+- task: PublishTestResults@2
+  displayName: 'Publish JUnit Test Results'
+  condition: succeededOrFailed() 
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/build/test-results/**/TEST-*.xml' 
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    testRunTitle: 'Java 25 Automation Test Results'
+    failTaskOnFailedTests: true
+
