@@ -1,6 +1,6 @@
 # Replace 'your-specific-branch' with the actual name of your branch
 trigger:
-  - new
+  - tesing
 
 pool:
   vmImage: 'ubuntu-latest'
