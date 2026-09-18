@@ -23,9 +23,9 @@ steps:
   displayName: 'Run Headless Automation Tests'
 
 # Step 4: Publish Test Results to Azure DevOps UI
-- task: PublishPipelineArtifact@1
+- task: PublishTestResults@1
   inputs:
-    targetPath: $(System.DefaultWorkingDirectory)/bin/WebApp
-    artifactName: WebApp
+    testRunner: 'JUnit' # 'JUnit' | 'NUnit' | 'VSTest' | 'XUnit'. Required. Test Result Format. Default: JUnit.
+    testResultsFiles: '**/TEST-*.xml'
 
 
